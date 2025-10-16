@@ -54,8 +54,7 @@ upload_file_task = HttpOperator(
     http_conn_id='students_api',
     endpoint='/students/upload',
     method='POST',
-    # Don't set 'data' parameter for file uploads
-    request_kwargs={
+    # Don't set 'data' parameter for file uploads\n    request_kwargs={
         'files': {
             'file': open('/opt/airflow/dags/students_data.csv', 'rb')
         }
@@ -67,7 +66,7 @@ upload_file_task = HttpOperator(
 run_custom_query = SQLExecuteQueryOperator(
     task_id='run_custom_query',
     conn_id='postgres_students',
-    sql="SELECT * FROM students LIMIT 10",
+    sql="{{ var.value.student_query }}",
     doc_md="""
     Executes a custom SQL query stored in the Airflow Variable 'student_query'.
     Allows dynamic query execution without code changes.
