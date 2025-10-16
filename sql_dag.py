@@ -50,7 +50,7 @@ create_table = SQLExecuteQueryOperator(
 )
 
 upload_file_task = HttpOperator(
-    task_id='upload_file',
+    task_id='upload_students_data',
     http_conn_id='students_api',
     endpoint='/students/upload',
     method='POST',
@@ -65,9 +65,9 @@ upload_file_task = HttpOperator(
 
 # Task 4: Run custom SQL query from Airflow Variable
 run_custom_query = SQLExecuteQueryOperator(
-    task_id='run_custom_query',
+    task_id='execute_student_analytics',
     conn_id='postgres_students',
-    sql="SELECT * FROM students LIMIT 10",
+    sql=Variable.get("student_query"),
     doc_md="""
     Executes a custom SQL query stored in the Airflow Variable 'student_query'.
     Allows dynamic query execution without code changes.
