@@ -30,7 +30,7 @@ dag = DAG(
 create_table = SQLExecuteQueryOperator(
     task_id='create_table',
     conn_id='postgres_students',
-    sql="""
+    sql=\"\"\"
     CREATE TABLE IF NOT EXISTS students (
         student_id INTEGER PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
@@ -40,12 +40,12 @@ create_table = SQLExecuteQueryOperator(
         score INTEGER,
         enrollment_date DATE
     );
-    """,
-    doc_md="""
-    Creates the 'students' table with schema for storing student records.
-    Includes fields for student_id, name, age, grade, subject, score, and enrollment_date.
-    Uses IF NOT EXISTS to safely handle table creation on multiple DAG runs.
-    """,
+    \"\"\",
+    doc_md=\"\"\"\
+    Creates the 'students\' table with schema for storing student records.\
+    Includes fields for student_id, name, age, grade, subject, score, and enrollment_date.\
+    Uses IF NOT EXISTS to safely handle table creation on multiple DAG runs.\
+    \"\"\",
     dag=dag,
 )
 
@@ -67,12 +67,12 @@ upload_file_task = HttpOperator(
 run_custom_query = SQLExecuteQueryOperator(
     task_id='execute_student_analytics',
     conn_id='postgres_students',
-    sql="SELECT * FROM students LIMIT 10",
-    doc_md="""
-    Executes a custom SQL query stored in the Airflow Variable 'student_query'.
-    Allows dynamic query execution without code changes.
-    Set the 'student_query' variable in Airflow UI with your desired SQL.
-    """,
+    sql=Variable.get("student_query"),
+    doc_md=\"\"\"\
+    Executes a custom SQL query stored in the Airflow Variable 'student_query'.\
+    Allows dynamic query execution without code changes.\
+    Set the 'student_query' variable in Airflow UI with your desired SQL.\
+    \"\"\",
     dag=dag,
 )
 
