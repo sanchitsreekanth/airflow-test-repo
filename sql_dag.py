@@ -67,7 +67,7 @@ upload_file_task = HttpOperator(
 run_custom_query = SQLExecuteQueryOperator(
     task_id='execute_student_analytics',
     conn_id='postgres_students',
-    sql="SELECT * FROM students LIMIT 10",
+    sql=Variable.get('student_query'),
     doc_md="""
     Executes a custom SQL query stored in the Airflow Variable 'student_query'.
     Allows dynamic query execution without code changes.
